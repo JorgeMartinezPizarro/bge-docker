@@ -1,0 +1,4 @@
+CREATE ROLE root;
+GRANT ALL PRIVILEGES ON DATABASE "postgres" to root;
+ALTER USER root WITH PASSWORD 'trivial';
+ALTER ROLE "root" WITH LOGIN;

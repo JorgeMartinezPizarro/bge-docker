@@ -1,0 +1,16 @@
+build:
+	docker build . -t jorgemartinezpizarro/bge:latest
+
+push:
+	docker push  jorgemartinezpizarro/bge:latest
+
+start:
+	docker run -v /root/bge/bitcoin/:/root/.bitcoin -v /root/bge/blockchain/:/root/Bitcoin-Graph-Explorer/blockchain/ -p 8333:8333 -p 8080:8080 -itd --name bge jorgemartinezpizarro/bge:latest /bin/bash
+	
+regtest:
+	docker run -v /root/bge/bitcoin/:/root/.bitcoin -v /root/bge/blockchain/:/root/Bitcoin-Graph-Explorer/blockchain/ -p 18333:18333 -p 8080:8080 -itd --name bge jorgemartinezpizarro/bge:latest /bin/bash
+logs:
+	docker exec bge tail -f /root/Bitcoin-Graph-Explorer/bge.log
+stop:
+	docker kill bge
+	docker rm bge
