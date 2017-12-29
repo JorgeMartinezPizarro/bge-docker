@@ -1,0 +1,82 @@
+version: "2.1"
+services: 
+  play:
+    image: jorgemartinezpizarro/bitcoinprivacy:latest
+    volumes:
+      - "/root/bitcoinprivacy/play/custom.conf:/conf/custom.conf"
+    ports:
+      - 9000:9000
+    networks:
+      bge_network:
+        ipv4_address: 172.18.0.6
+    depends_on:
+      bge:
+        condition: service_started
+      bgeapi:
+        condition: service_started
+      bitcoin:
+        condition: service_started
+      postgres:
+        condition: service_started
+    command: "/root/play-bitcoinprivacy/target/universal/stage/bin/play-bitcoinprivacy -Dconfig.file=/conf/custom.conf"
+
+  bge:
+    image: jorgemartinezpizarro/bge:latest
+    depends_on:
+      postgres:
+        condition: service_started
+      bitcoin:
+        condition: service_started
+    networks:
+      bge_network:
+        ipv4_address: 172.18.0.4 
+    volumes:
+      - "/root/bitcoinprivacy/bge/bge.conf:/conf/bge.conf"
+      - "/root/bge/bitcoin:/root/.bitcoin"
+      - "/root/bge/blockchain:/root/Bitcoin-Graph-Explorer/blockchain"
+    command: "bge start --force -Dconfig.file=/conf/bge.conf"
+
+  bgeapi: 
+    image: jorgemartinezpizarro/bgeapi:latest
+    networks: 
+      bge_network:
+        ipv4_address: 172.18.0.5 
+    volumes:
+      - "/root/bitcoinprivacy/bgeapi/custom.conf:/conf/custom.conf"
+    ports: 
+      - 8080:8080
+    command: "bgeapi -Dconfig.file=/conf/custom.conf"
+
+  bitcoin:
+    image: ruimarinho/bitcoin-core:0.15.1
+    networks: 
+      bge_network:
+        ipv4_address: 172.18.0.2 
+    command: 
+      -printtoconsole
+      -testnet=1
+    volumes:
+      - "/root/bge/bitcoin:/home/bitcoin/.bitcoin"
+ 
+  postgres:
+    image: postgres:10.1
+    networks: 
+      bge_network:
+        ipv4_address: 172.18.0.3
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: trivial
+      POSTGRES_DB: postgres
+    volumes:
+      - "/root/bge/psql:/var/lib/postgresql/data"
+
+networks:
+  bge_network:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+      -
+        subnet: 172.18.0.0/24
