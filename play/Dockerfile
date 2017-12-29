@@ -1,0 +1,22 @@
+FROM debian
+
+WORKDIR /root
+#/usr/lib/postgresql/9.6/bin/pg_ctl -D /var/lib/postgresql/9.6/main/ -l logfile start
+ADD . /root/
+
+RUN ls -lah && \
+ apt-get update && \
+ apt-get install wget apt-utils apt-transport-https fakeroot default-jdk default-jre dirmngr git emacs sudo tmux iotop htop ca-certificates unzip -y && \
+ echo "deb https://dl.bintray.com/sbt/debian /" | sudo tee -a /etc/apt/sources.list.d/sbt.list && \
+ apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 2EE0EA64E40A89B84B2DF73499E82A75642AC823 && \
+ apt-get update && \
+ apt-get install sbt && \
+ wget https://downloads.typesafe.com/typesafe-activator/1.3.12/typesafe-activator-1.3.12-minimal.zip && \
+ unzip typesafe* . && \
+ git clone https://github.com/bitcoinprivacy/play-bitcoinprivacy.git && \
+ ln -s /root/play-bitcoinprivacy/activator-1.3.12-minimal/bin/activator /usr/bin/activator && \
+ cd play-bitcoinprivacy && \
+ activator stage && \
+ cp conf/reference.conf conf/application.conf && \
+ apt-get install procps
+ 
