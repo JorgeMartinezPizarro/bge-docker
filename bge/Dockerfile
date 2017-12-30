@@ -1,4 +1,4 @@
-FROM debian
+FROM debian as builder
 
 WORKDIR /root
 
@@ -19,7 +19,10 @@ RUN git clone https://github.com/bitcoinj/bitcoinj.git && \
  git clone https://github.com/bitcoinprivacy/Bitcoin-Graph-Explorer.git && \
  cd /root/Bitcoin-Graph-Explorer && \
  git checkout development && \
- sbt debian:packageBin && \
- dpkg -i target/bge_3.3-SNAPSHOT_all.deb 
+ sbt assembly
 
+FROM openjdk:8-jre-alpine
 
+WORKDIR /root
+
+COPY --from=builder /root/Bitcoin-Graph-Explorer/target/scala-2.11/bge-assembly-3.3-SNAPSHOT.jar /root/bge/bge.jar

@@ -1,7 +1,8 @@
 version: "2.1"
 services: 
   play:
-    image: jorgemartinezpizarro/bitcoinprivacy:latest
+    image: jorgemartinezpizarro/bitcoinprivacy:SNAPSHOT
+    build: ./play
     volumes:
       - "$PWD/play/custom.conf:/conf/custom.conf"
     ports:
@@ -18,7 +19,9 @@ services:
         condition: service_started
       postgres:
         condition: service_started
-    command: "/root/play-bitcoinprivacy/target/universal/stage/bin/play-bitcoinprivacy -Dconfig.file=/conf/custom.conf"
+    command: "java -Dconfig.file=/conf/custom.conf -jar /root/play-bitcoinprivacy/bitcoinprivacy.jar"
+    environment: 
+      JAVA_MAX_MEM: 1G
     healthcheck:
       test: ["CMD", "testURI", "http://localhost:9000/faq"]
       interval: 15s
@@ -26,7 +29,8 @@ services:
       retries: 40
 
   bge:
-    image: jorgemartinezpizarro/bge:latest
+    image: jorgemartinezpizarro/bge:SNAPSHOT
+    build: ./bge
     depends_on:
       postgres:
         condition: service_started
@@ -39,18 +43,21 @@ services:
       - "$PWD/bge/bge.conf:/conf/bge.conf"
       - "$DATA_FOLDER/bitcoin:/root/.bitcoin"
       - "$DATA_FOLDER/blockchain:/root/Bitcoin-Graph-Explorer/blockchain"
-    command: "bge start --force -Dconfig.file=/conf/bge.conf"
+    command: "java -Dconfig.file=/conf/bge.conf -jar /root/bge/bge.jar start --force"
 
   bgeapi: 
-    image: jorgemartinezpizarro/bgeapi:latest
+    image: jorgemartinezpizarro/bgeapi:SNAPSHOT
+    build: ./bgeapi
     networks: 
       bge_network:
         ipv4_address: 172.18.0.5 
+    environment: 
+      JAVA_MAX_MEM: 1G
     volumes:
       - "$PWD/bgeapi/custom.conf:/conf/custom.conf"
     ports: 
       - 8080:8080
-    command: "bgeapi -Dconfig.file=/conf/custom.conf"
+    command: "java -Dconfig.file=/conf/custom.conf -jar /root/bge/bgeapi.jar"
 
   bitcoin:
     image: ruimarinho/bitcoin-core:0.15.1
