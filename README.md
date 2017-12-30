@@ -2,17 +2,19 @@ To start the services individually:
 
 Folder structure:
 
-	README.md
-	docker-compose.yml
-	play/
-		Dockerfile
-		play.conf
-	bge/
-		Dockerfile
-		bge.conf
-	bgeapi/
-		Dockerfile
-		bge.conf
+	├── bge
+	│   ├── bge.conf
+	│   └── Dockerfile
+	├── bgeapi
+	│   ├── custom.conf
+	│   └── Dockerfile
+	├── docker-compose.yml
+	├── play
+	│   ├── custom.conf
+	│   └── Dockerfile
+	├── psql
+	│   └── custom.conf
+	└── README.md
 
 The bitcoinprivacy docker-compose uses the following docker images:
 
