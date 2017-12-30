@@ -28,7 +28,7 @@ services:
       retries: 40
 
   bge:
-    image: jorgemartinezpizarro/bge:latest
+    image: jorgemartinezpizarro/bge:SNAPSHOT
     depends_on:
       postgres:
         condition: service_started
@@ -41,10 +41,10 @@ services:
       - "$PWD/bge/bge.conf:/conf/bge.conf"
       - "$DATA_FOLDER/bitcoin:/root/.bitcoin"
       - "$DATA_FOLDER/blockchain:/root/Bitcoin-Graph-Explorer/blockchain"
-    command: "bge start --force -Dconfig.file=/conf/bge.conf"
+    command: "java -Dconfig.file=/conf/bge.conf -jar /root/bge/bge.jar start --force"
 
   bgeapi: 
-    image: jorgemartinezpizarro/bgeapi:latest
+    image: jorgemartinezpizarro/bgeapi:SNAPSHOT
     networks: 
       bge_network:
         ipv4_address: 172.18.0.5 
@@ -54,7 +54,7 @@ services:
       - "$PWD/bgeapi/custom.conf:/conf/custom.conf"
     ports: 
       - 8080:8080
-    command: "bgeapi -Dconfig.file=/conf/custom.conf"
+    command: "java -Dconfig.file=/conf/custom.conf -jar /root/bge/bgeapi.jar"
 
   bitcoin:
     image: ruimarinho/bitcoin-core:0.15.1
