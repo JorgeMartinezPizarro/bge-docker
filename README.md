@@ -1,37 +1,30 @@
 To start the services individually:
 
-Folders structure:
+Folder structure:
 
 	README.md
 	docker-compose.yml
 	play/
 		Dockerfile
-		Makefile
 		play.conf
 	bge/
 		Dockerfile
-		Makefile
 		bge.conf
 	bgeapi/
 		Dockerfile
-		Makefile
 		bge.conf
-	bitcoin/
-		bitcoin.conf
-		Makefile
-	postgres/
-		postgres.conf
-		Makefile
 
-https://hub.docker.com/_/postgres/
+The bitcoinprivacy docker-compose uses the following docker images:
 
-https://hub.docker.com/r/ruimarinho/bitcoin-core/
+	https://hub.docker.com/_/postgres/
 
-https://hub.docker.com/r/jorgemartinezpizarro/bge
+	https://hub.docker.com/r/ruimarinho/bitcoin-core/
+	
+	https://hub.docker.com/r/jorgemartinezpizarro/bge
 
-https://hub.docker.com/r/jorgemartinezpizarro/bgeapi
+	https://hub.docker.com/r/jorgemartinezpizarro/bgeapi
 
-https://hub.docker.com/r/jorgemartinezpizarro/bitcoinprivacy
+	https://hub.docker.com/r/jorgemartinezpizarro/bitcoinprivacy
 
 To start the service it is a required a data folder with the following subfolders:
 
@@ -40,19 +33,16 @@ To start the service it is a required a data folder with the following subfolder
 		bitcoin/
 		blockchain/
 
-To start the docker-compose project, install docker and docker-compose on your machine and run:
+and to export als environment variable the folder DATA_FOLDER=/root/data:
+
+	export DATA_FOLDER=/root/data
+
+To start the docker-compose project, install git, docker and docker-compose on your machine and run:
 
 	git clone https://github.com/JorgeMartinezPizarro/bge-docker.git
 	cd bge-docker
-	export DATA_FOLDER=/root/data
 	docker-compose up -d
 	
-The Makefiles contains targets start and stop to test locally each image standalone. 
-
-The Dockerfiles together with a build and push target to make deployment of new images easy. 
-
-Push command requires permissions to push docker images to the jorgemartinezpizarro/ repositories, allowed for bitcoinprivacy developers.
+To build new versions of the docker images update the docker-compose file and use docker-compose build
 
 Configuration from postgres and bitcoin can be modified using the environment variables set in the docker-compose.yml file. 
-
-TODO: In next versions it will be allowed to config postgres and bitcoin using conf file.

@@ -2,6 +2,7 @@ version: "2.1"
 services: 
   play:
     image: jorgemartinezpizarro/bitcoinprivacy:SNAPSHOT
+    build: ./play
     volumes:
       - "$PWD/play/custom.conf:/conf/custom.conf"
     ports:
@@ -29,6 +30,7 @@ services:
 
   bge:
     image: jorgemartinezpizarro/bge:SNAPSHOT
+    build: ./bge
     depends_on:
       postgres:
         condition: service_started
@@ -45,6 +47,7 @@ services:
 
   bgeapi: 
     image: jorgemartinezpizarro/bgeapi:SNAPSHOT
+    build: ./bgeapi
     networks: 
       bge_network:
         ipv4_address: 172.18.0.5 
@@ -80,6 +83,7 @@ services:
       POSTGRES_DB: postgres
     volumes:
       - "$DATA_FOLDER/psql:/var/lib/postgresql/data"
+
 networks:
   bge_network:
     driver: bridge
