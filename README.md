@@ -23,6 +23,16 @@ Folders structure:
 		postgres.conf
 		Makefile
 
+https://hub.docker.com/_/postgres/
+
+https://hub.docker.com/r/ruimarinho/bitcoin-core/
+
+https://hub.docker.com/r/jorgemartinezpizarro/bge
+
+https://hub.docker.com/r/jorgemartinezpizarro/bgeapi
+
+https://hub.docker.com/r/jorgemartinezpizarro/bitcoinprivacy
+
 To start the service it is a required a data folder with the following subfolders:
 
 	/root/data/

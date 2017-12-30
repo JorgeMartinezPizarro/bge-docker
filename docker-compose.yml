@@ -1,7 +1,7 @@
 version: "2.1"
 services: 
   play:
-    image: jorgemartinezpizarro/bitcoinprivacy:latest
+    image: jorgemartinezpizarro/bitcoinprivacy:SNAPSHOT
     volumes:
       - "$PWD/play/custom.conf:/conf/custom.conf"
     ports:
@@ -18,7 +18,9 @@ services:
         condition: service_started
       postgres:
         condition: service_started
-    command: "/root/play-bitcoinprivacy/target/universal/stage/bin/play-bitcoinprivacy -Dconfig.file=/conf/custom.conf"
+    command: "java -Dconfig.file=/conf/custom.conf -jar /root/play-bitcoinprivacy/bitcoinprivacy.jar"
+    environment: 
+      JAVA_MAX_MEM: 1G
     healthcheck:
       test: ["CMD", "testURI", "http://localhost:9000/faq"]
       interval: 15s
@@ -46,6 +48,8 @@ services:
     networks: 
       bge_network:
         ipv4_address: 172.18.0.5 
+    environment: 
+      JAVA_MAX_MEM: 1G
     volumes:
       - "$PWD/bgeapi/custom.conf:/conf/custom.conf"
     ports: 
@@ -76,7 +80,6 @@ services:
       POSTGRES_DB: postgres
     volumes:
       - "$DATA_FOLDER/psql:/var/lib/postgresql/data"
-
 networks:
   bge_network:
     driver: bridge
