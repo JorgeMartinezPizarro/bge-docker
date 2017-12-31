@@ -37,7 +37,7 @@ services:
       - "$PWD/bge/logback.xml:/conf/logback.xml"
       - "$DATA_FOLDER/bitcoin:/root/.bitcoin"
       - "$DATA_FOLDER/blockchain:/root/Bitcoin-Graph-Explorer/blockchain"
-    command: "java -Dconfig.file=/conf/bge.conf -Dlogback.configurationFile=/conf/logback.xml -jar /root/bge/bge.jar start --force"
+    command: "java -Dconfig.file=/conf/bge.conf -Dlogback.configurationFile=/conf/logback.xml -jar /root/bge/bge.jar start"
   bgeapi: 
     image: jorgemartinezpizarro/bgeapi:SNAPSHOT
     networks: 
