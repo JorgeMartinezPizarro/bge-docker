@@ -6,47 +6,63 @@ Folder structure:
 
 	├── bge
 	│   ├── bge.conf
-	│   └── Dockerfile
+	│   ├── Dockerfile
+	│   └── logback.xml
 	├── bgeapi
-	│   ├── custom.conf
-	│   └── Dockerfile
+	│   ├── bgeapi.conf
+	│   ├── Dockerfile
+	│   └── logback.xml
 	├── docker-compose.yml
+	├── Makefile
 	├── play
-	│   ├── custom.conf
-	│   └── Dockerfile
-	├── psql
-	│   └── custom.conf
+	│   ├── Dockerfile
+	│   ├── logback.xml
+	│   └── play.conf
 	└── README.md
 
 The bitcoinprivacy docker-compose uses the following docker images:
 
-	https://hub.docker.com/_/postgres/
-
-	https://hub.docker.com/r/ruimarinho/bitcoin-core/
-	
-	https://hub.docker.com/r/jorgemartinezpizarro/bge
-
-	https://hub.docker.com/r/jorgemartinezpizarro/bgeapi
-
-	https://hub.docker.com/r/jorgemartinezpizarro/bitcoinprivacy
+- https://hub.docker.com/_/postgres/
+- https://hub.docker.com/r/ruimarinho/bitcoin-core/
+- https://hub.docker.com/r/jorgemartinezpizarro/bge
+- https://hub.docker.com/r/jorgemartinezpizarro/bgeapi
+- https://hub.docker.com/r/jorgemartinezpizarro/bitcoinprivacy
 
 To start the services it is a required a data folder with the following subfolders:
 
-	/root/data/
-		psql/
-		bitcoin/
-		blockchain/
+	 ├── /root/data
+	 |   ├── bitcoin/
+	 |   ├── blockchain/
+	 |   └── psqlpsql/
 
 and to export als environment variable the folder DATA_FOLDER=/root/data:
 
 	export DATA_FOLDER=/root/data
 
+Remember that for docker-machine you have to create the folder inside the docker host
+
 To start the docker-compose project, install git, docker and docker-compose on your machine and run:
 
 	git clone https://github.com/JorgeMartinezPizarro/bge-docker.git
 	cd bge-docker
-	docker-compose up -d
+	make start
 	
-To build new versions of the docker images update the docker-compose file and use docker-compose build
+To build new versions of the docker images (all 3 or only 1 of them)
 
-Configuration from postgres and bitcoin can be modified using the environment variables set in the docker-compose.yml file. 
+	make build ## build all dockers
+	make build-play
+	make build-bge
+	make build-bgeapi
+
+To view live logs of the current compose use
+
+	make logs
+
+To stop and clean there are available
+
+	make stop
+	make clean 
+
+targets.
+
+For configuration options you can change the conf files inside of each component folder. To change the config of bitcoin and postgres look at the links in hub.docker.io for more information.
