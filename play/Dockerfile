@@ -1,7 +1,6 @@
 FROM debian AS builder
 
 WORKDIR /root
-#/usr/lib/postgresql/9.6/bin/pg_ctl -D /var/lib/postgresql/9.6/main/ -l logfile start
 ADD . /root/
 
 RUN apt-get update
@@ -17,7 +16,5 @@ WORKDIR /root/play-bitcoinprivacy
 RUN sbt assembly
 
 FROM openjdk:8-jre-alpine
-
-WORKDIR /root
-
+## todo: add the assets to the classpath
 COPY --from=builder /root/play-bitcoinprivacy/target/scala-2.11/play-bitcoinprivacy-assembly-2.0.jar /root/play-bitcoinprivacy/bitcoinprivacy.jar
