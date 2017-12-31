@@ -1,4 +1,6 @@
-To start the services individually:
+Or how to start a bitcoin core full node with an extra awesome bitcoin privacy graph explorer behind:
+
+To start the services individually, use the start target
 
 Folder structure:
 
@@ -28,7 +30,7 @@ The bitcoinprivacy docker-compose uses the following docker images:
 
 	https://hub.docker.com/r/jorgemartinezpizarro/bitcoinprivacy
 
-To start the service it is a required a data folder with the following subfolders:
+To start the services it is a required a data folder with the following subfolders:
 
 	/root/data/
 		psql/
