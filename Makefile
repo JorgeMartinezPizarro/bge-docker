@@ -19,17 +19,17 @@ build: build-bge build-play build-bgeapi
 
 ## build bge
 build-bge:
-	docker build bge -t "${REPOSITORY}/bge:${VERSION}"
+	docker build bge --no-cache -t "${REPOSITORY}/bge:${VERSION}"
 	docker push "${REPOSITORY}/bge:${VERSION}"
 
 ## build play
 build-play:
-	docker build play -t "${REPOSITORY}/bitcoinprivacy:${VERSION}"
+	docker build play --no-cache -t "${REPOSITORY}/bitcoinprivacy:${VERSION}"
 	docker push "${REPOSITORY}/bitcoinprivacy:${VERSION}"
 
 ## build bgeapi
 build-bgeapi:
-	docker build bgeapi -t  "${REPOSITORY}/bgeapi:${VERSION}"
+	docker build bgeapi --no-cache -t  "${REPOSITORY}/bgeapi:${VERSION}"
 	docker push "${REPOSITORY}/bgeapi:${VERSION}"
 
 ##logs
