@@ -25,6 +25,4 @@ RUN git clone https://github.com/bitcoinj/bitcoinj.git && \
 
 FROM openjdk:8-jre-alpine
 
-WORKDIR /root
-
 COPY --from=builder /root/Bitcoin-Graph-Explorer/api/target/scala-2.11/bgeapi-assembly-3.3-SNAPSHOT.jar /root/bge/bgeapi.jar
