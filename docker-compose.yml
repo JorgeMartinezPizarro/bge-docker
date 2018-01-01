@@ -15,16 +15,11 @@ services:
       - bgeapi
       - bitcoin
       - postgres
-    environment: 
-      JAVA_MAX_MEM: 1G
-    command: "java -Dconfig.file=/conf/play.conf -Dlogback.configurationFile=/conf/logback.xml -jar /root/play-bitcoinprivacy/bitcoinprivacy.jar"
   bge:
     image: jorgemartinezpizarro/bge:SNAPSHOT
     depends_on:
       - postgres
       - bitcoin
-    environment:
-      JAVA_MAX_MEM: 4G
     networks:
       bge_network:
         ipv4_address: 172.18.0.4 
@@ -33,20 +28,16 @@ services:
       - "$PWD/bge/logback.xml:/conf/logback.xml"
       - "$DATA_FOLDER/bitcoin:/root/.bitcoin"
       - "$DATA_FOLDER/blockchain:/root/Bitcoin-Graph-Explorer/blockchain"
-    command: "java -Dconfig.file=/conf/bge.conf -Dlogback.configurationFile=/conf/logback.xml -jar /root/bge/bge.jar start"
   bgeapi: 
     image: jorgemartinezpizarro/bgeapi:SNAPSHOT
     networks: 
       bge_network:
         ipv4_address: 172.18.0.5 
-    environment: 
-      JAVA_MAX_MEM: 1G
     volumes:
       - "$PWD/bgeapi/bgeapi.conf:/conf/bgeapi.conf"
       - "$PWD/bgeapi/logback.xml:/conf/logback.xml"
     ports: 
       - 8080:8080
-    command: "java -Dconfig.file=/conf/bgeapi.conf -Dlogback.configurationFile=/conf/logback.xml -jar /root/bge/bgeapi.jar"
   bitcoin:
     image: ruimarinho/bitcoin-core:0.15.1
     networks: 
@@ -70,7 +61,7 @@ services:
       POSTGRES_DB: postgres
     volumes:
       - "$DATA_FOLDER/psql:/var/lib/postgresql/data"
-      - "$PWD/postgres/postgres.conf:/var/lob/postgresql/data/postgesql.conf"
+      - "$PWD/postgres/postgres.conf:/etc/postgresql/postgesql.conf"
      
 networks:
   bge_network:

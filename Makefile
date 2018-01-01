@@ -32,6 +32,17 @@ build-bgeapi:
 	docker build bgeapi --no-cache -t  "${REPOSITORY}/bgeapi:${VERSION}"
 	docker push "${REPOSITORY}/bgeapi:${VERSION}"
 
+## build jdk
+build-jdk:
+	docker build jdk --no-cache -t  "${REPOSITORY}/jdk:SNAPSHOT"
+	docker push "${REPOSITORY}/jdk:SNAPSHOT"
+
+## build jre
+build-jre:
+	docker build jre --no-cache -t  "${REPOSITORY}/jre:SNAPSHOT"
+	docker push "${REPOSITORY}/jre:SNAPSHOT"
+
+
 ##logs
 logs:
 	docker-compose logs --tail="all" --follow play bge bgeapi bitcoin postgres
