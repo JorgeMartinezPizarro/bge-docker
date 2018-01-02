@@ -2,7 +2,7 @@ FROM jorgemartinezpizarro/jdk:8-full as builder
 
 WORKDIR /root
 
-RUN git clone https://github.com/bitcoinprivacy/Bitcoin-Graph-Explorer.git && \
+RUN git clone https://github.com/bitcoinprivacy/Bitcoin-Graph-Explorer.git
 
 WORKDIR /root/Bitcoin-Graph-Explorer
 

@@ -12,3 +12,4 @@ RUN apt-get update && \
  cd bitcoinj && \
  git checkout segwit && \
  mvn install || true
+
