@@ -13,9 +13,9 @@ Folder structure:
 	│   ├── Dockerfile
 	│   └── logback.xml
 	├── play
-        │   ├── Dockerfile
-        │   ├── logback.xml
-        │   └── play.conf
+	│   ├── Dockerfile
+	│   ├── logback.xml
+	│   └── play.conf
 	├── bitcoin
 	│   └── bitcoin.conf
 	├── jdk
