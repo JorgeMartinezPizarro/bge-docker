@@ -45,9 +45,10 @@ services:
         ipv4_address: 172.18.0.2 
     command: 
       -printtoconsole
+      -conf=/etc/bitcoin/bitcoin.conf
     volumes:
       - "$DATA_FOLDER/bitcoin:/home/bitcoin/.bitcoin"
-      - "$PWD/bitcoin/bitcoin.conf:/home/bitcoin/.bitcoin/bitcoin.conf"
+      - "$PWD/bitcoin/bitcoin.conf:/etc/bitcoin/bitcoin.conf"
   postgres:
     image: postgres:10.1
     networks: 
