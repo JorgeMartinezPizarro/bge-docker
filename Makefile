@@ -1,11 +1,10 @@
 export VERSION?=SNAPSHOT
-export DATA_FOLDER?=/root/bge
+export DATA_FOLDER?=/root/bge-data
 export REPOSITORY=jorgemartinezpizarro
 
 ## start
 start:
 	docker-compose up -d
-
 ## stop
 stop:
 	docker-compose kill
@@ -16,11 +15,6 @@ clean:
 
 ## build
 build: build-bge build-play build-bgeapi
-
-## build bge
-build-bge:
-	docker build bge --no-cache -t "${REPOSITORY}/bge:${VERSION}"
-	docker push "${REPOSITORY}/bge:${VERSION}"
 
 ## build play
 build-play:
@@ -41,7 +35,6 @@ build-jdk:
 build-jre:
 	docker build jre --no-cache -t  "${REPOSITORY}/jre:SNAPSHOT"
 	docker push "${REPOSITORY}/jre:SNAPSHOT"
-
 
 ##logs
 logs:

@@ -16,7 +16,10 @@ services:
       - bitcoin
       - postgres
   bge:
-    image: jorgemartinezpizarro/bge:SNAPSHOT
+    image: jorgemartinezpizarro/bge:3.3-SNAPSHOT
+    environment:
+      JAVA_MAX_MEM: 20g
+      JAVA_MIN_MEM: 8g
     depends_on:
       - postgres
       - bitcoin
@@ -33,16 +36,18 @@ services:
     networks: 
       bge_network:
         ipv4_address: 172.18.0.5 
+    ports:
+      - 8080:8080
     volumes:
       - "$PWD/bgeapi/bgeapi.conf:/conf/bgeapi.conf"
       - "$PWD/bgeapi/logback.xml:/conf/logback.xml"
-    ports: 
-      - 8080:8080
   bitcoin:
-    image: ruimarinho/bitcoin-core:0.15.1
+    image: ruimarinho/bitcoin-core:0.16.0
     networks: 
       bge_network:
         ipv4_address: 172.18.0.2 
+    ports:
+      - 8333:8333
     command: 
       -printtoconsole
       -conf=/etc/bitcoin/bitcoin.conf
@@ -51,19 +56,19 @@ services:
       - "$PWD/bitcoin/bitcoin.conf:/etc/bitcoin/bitcoin.conf"
   postgres:
     image: postgres:10.1
-    networks: 
+    networks:
       bge_network:
         ipv4_address: 172.18.0.3
-    ports:
-      - 5432:5432
     environment:
       POSTGRES_USER: root
       POSTGRES_PASSWORD: trivial
       POSTGRES_DB: postgres
     volumes:
       - "$DATA_FOLDER/psql:/var/lib/postgresql/data"
-      - "$PWD/postgres/postgres.conf:/etc/postgresql/postgesql.conf"
-     
+      - "$PWD/postgres/postgres.conf:/etc/postgresql/postgresql.conf"
+    command:
+      -c
+      config_file=/etc/postgresql/postgresql.conf
 networks:
   bge_network:
     driver: bridge
