@@ -18,7 +18,7 @@ services:
   bge:
     image: jorgemartinezpizarro/bge:3.3-SNAPSHOT
     environment:
-      JAVA_MAX_MEM: 20g
+      JAVA_MAX_MEM: 40g
       JAVA_MIN_MEM: 8g
     depends_on:
       - postgres
@@ -63,6 +63,10 @@ services:
       POSTGRES_USER: root
       POSTGRES_PASSWORD: trivial
       POSTGRES_DB: postgres
+    expose: 
+      - 4442
+    ports: 
+      - "4442:4442"
     volumes:
       - "$DATA_FOLDER/psql:/var/lib/postgresql/data"
       - "$PWD/postgres/postgres.conf:/etc/postgresql/postgresql.conf"
