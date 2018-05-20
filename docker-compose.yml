@@ -1,4 +1,4 @@
-version: "2.1"
+version: "3"
 services: 
   play:
     image: jorgemartinezpizarro/bitcoinprivacy:SNAPSHOT
@@ -11,24 +11,18 @@ services:
       bge_network:
         ipv4_address: 172.18.0.6
     depends_on:
-      bge:
-        condition: service_started
-      bgeapi:
-        condition: service_started
-      bitcoin:
-        condition: service_started
-      postgres:
-        condition: service_started
-    environment: 
-      JAVA_MAX_MEM: 1G
-    command: "java -Dconfig.file=/conf/play.conf -Dlogback.configurationFile=/conf/logback.xml -jar /root/play-bitcoinprivacy/bitcoinprivacy.jar"
+      - bge
+      - bgeapi
+      - bitcoin
+      - postgres
   bge:
-    image: jorgemartinezpizarro/bge:SNAPSHOT
+    image: jorgemartinezpizarro/bge:3.3-SNAPSHOT
+    environment:
+      JAVA_MAX_MEM: 20g
+      JAVA_MIN_MEM: 8g
     depends_on:
-      postgres:
-        condition: service_started
-      bitcoin:
-        condition: service_started
+      - postgres
+      - bitcoin
     networks:
       bge_network:
         ipv4_address: 172.18.0.4 
@@ -37,43 +31,44 @@ services:
       - "$PWD/bge/logback.xml:/conf/logback.xml"
       - "$DATA_FOLDER/bitcoin:/root/.bitcoin"
       - "$DATA_FOLDER/blockchain:/root/Bitcoin-Graph-Explorer/blockchain"
-    command: "java -Dconfig.file=/conf/bge.conf -Dlogback.configurationFile=/conf/logback.xml -jar /root/bge/bge.jar start"
   bgeapi: 
     image: jorgemartinezpizarro/bgeapi:SNAPSHOT
     networks: 
       bge_network:
         ipv4_address: 172.18.0.5 
-    environment: 
-      JAVA_MAX_MEM: 1G
+    ports:
+      - 8080:8080
     volumes:
       - "$PWD/bgeapi/bgeapi.conf:/conf/bgeapi.conf"
       - "$PWD/bgeapi/logback.xml:/conf/logback.xml"
-    ports: 
-      - 8080:8080
-    command: "java -Dconfig.file=/conf/bgeapi.conf -Dlogback.configurationFile=/conf/logback.xml -jar /root/bge/bgeapi.jar"
   bitcoin:
-    image: ruimarinho/bitcoin-core:0.15.1
+    image: ruimarinho/bitcoin-core:0.16.0
     networks: 
       bge_network:
         ipv4_address: 172.18.0.2 
+    ports:
+      - 8333:8333
     command: 
       -printtoconsole
-      -testnet=1
+      -conf=/etc/bitcoin/bitcoin.conf
     volumes:
       - "$DATA_FOLDER/bitcoin:/home/bitcoin/.bitcoin"
+      - "$PWD/bitcoin/bitcoin.conf:/etc/bitcoin/bitcoin.conf"
   postgres:
     image: postgres:10.1
-    networks: 
+    networks:
       bge_network:
         ipv4_address: 172.18.0.3
-    ports:
-      - 5432:5432
     environment:
       POSTGRES_USER: root
       POSTGRES_PASSWORD: trivial
       POSTGRES_DB: postgres
     volumes:
       - "$DATA_FOLDER/psql:/var/lib/postgresql/data"
+      - "$PWD/postgres/postgres.conf:/etc/postgresql/postgresql.conf"
+    command:
+      -c
+      config_file=/etc/postgresql/postgresql.conf
 networks:
   bge_network:
     driver: bridge

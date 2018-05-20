@@ -1,11 +1,10 @@
 export VERSION?=SNAPSHOT
-export DATA_FOLDER?=/root/bge
+export DATA_FOLDER?=/root/bge-data
 export REPOSITORY=jorgemartinezpizarro
 
 ## start
 start:
 	docker-compose up -d
-
 ## stop
 stop:
 	docker-compose kill
@@ -17,11 +16,6 @@ clean:
 ## build
 build: build-bge build-play build-bgeapi
 
-## build bge
-build-bge:
-	docker build bge --no-cache -t "${REPOSITORY}/bge:${VERSION}"
-	docker push "${REPOSITORY}/bge:${VERSION}"
-
 ## build play
 build-play:
 	docker build play --no-cache -t "${REPOSITORY}/bitcoinprivacy:${VERSION}"
@@ -31,6 +25,16 @@ build-play:
 build-bgeapi:
 	docker build bgeapi --no-cache -t  "${REPOSITORY}/bgeapi:${VERSION}"
 	docker push "${REPOSITORY}/bgeapi:${VERSION}"
+
+## build jdk
+build-jdk:
+	docker build jdk --no-cache -t  "${REPOSITORY}/jdk:SNAPSHOT"
+	docker push "${REPOSITORY}/jdk:SNAPSHOT"
+
+## build jre
+build-jre:
+	docker build jre --no-cache -t  "${REPOSITORY}/jre:SNAPSHOT"
+	docker push "${REPOSITORY}/jre:SNAPSHOT"
 
 ##logs
 logs:

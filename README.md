@@ -11,14 +11,23 @@ Folder structure:
 	├── bgeapi
 	│   ├── bgeapi.conf
 	│   ├── Dockerfile
-	│   └── logback.xml
-	├── docker-compose.yml
-	├── Makefile
+	│   └── logback.xml
 	├── play
 	│   ├── Dockerfile
 	│   ├── logback.xml
 	│   └── play.conf
+	├── bitcoin
+	│   └── bitcoin.conf
+	├── jdk
+	│   └── Dockerfile
+	├── jre
+	│   └── Dockerfile
+	├── postgres
+	│   └── postgres.conf
 	└── README.md
+	├── Makefile
+	├── docker-compose.yml
+
 
 The bitcoinprivacy docker-compose uses the following docker images:
 
