@@ -5,6 +5,7 @@ services:
     volumes:
       - "$PWD/play/play.conf:/conf/play.conf"
       - "$PWD/play/logback.xml:/conf/logback.xml"
+      - "$PWD/play/entry.sh:/root/entry.sh"
     ports:
       - 9000:9000
     networks:
