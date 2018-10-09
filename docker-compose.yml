@@ -5,11 +5,12 @@ services:
     volumes:
       - "$PWD/play/play.conf:/conf/play.conf"
       - "$PWD/play/logback.xml:/conf/logback.xml"
+      - "$PWD/play/entry.sh:/root/entry.sh"
     ports:
-      - 9000:9000
+      - 9002:9002
     networks:
       bge_network:
-        ipv4_address: 172.18.0.6
+        ipv4_address: 172.31.0.6
     depends_on:
       - bge
       - bgeapi
@@ -22,7 +23,7 @@ services:
       - bitcoin
     networks:
       bge_network:
-        ipv4_address: 172.18.0.4 
+        ipv4_address: 172.31.0.4 
     volumes:
       - "$PWD/bge/bge.conf:/conf/bge.conf"
       - "$PWD/bge/logback.xml:/conf/logback.xml"
@@ -32,17 +33,15 @@ services:
     image: jorgemartinezpizarro/bgeapi:SNAPSHOT
     networks: 
       bge_network:
-        ipv4_address: 172.18.0.5 
+        ipv4_address: 172.31.0.5 
     volumes:
       - "$PWD/bgeapi/bgeapi.conf:/conf/bgeapi.conf"
       - "$PWD/bgeapi/logback.xml:/conf/logback.xml"
-    ports: 
-      - 8080:8080
   bitcoin:
-    image: ruimarinho/bitcoin-core:0.15.1
+    image: ruimarinho/bitcoin-core:0.16.3
     networks: 
       bge_network:
-        ipv4_address: 172.18.0.2 
+        ipv4_address: 172.31.0.2 
     command: 
       -printtoconsole
       -conf=/etc/bitcoin/bitcoin.conf
@@ -53,16 +52,14 @@ services:
     image: postgres:10.1
     networks: 
       bge_network:
-        ipv4_address: 172.18.0.3
-    ports:
-      - 5432:5432
+        ipv4_address: 172.31.0.3
     environment:
       POSTGRES_USER: root
       POSTGRES_PASSWORD: trivial
       POSTGRES_DB: postgres
     volumes:
       - "$DATA_FOLDER/psql:/var/lib/postgresql/data"
-      - "$PWD/postgres/postgres.conf:/etc/postgresql/postgesql.conf"
+      - "$PWD/postgres/postgres.conf:/etc/postgresql/postgresql.conf"
      
 networks:
   bge_network:
@@ -71,4 +68,4 @@ networks:
       driver: default
       config:
       -
-        subnet: 172.18.0.0/24
+        subnet: 172.31.0.0/24
