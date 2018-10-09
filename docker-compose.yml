@@ -12,15 +12,12 @@ services:
       bge_network:
         ipv4_address: 172.18.0.6
     depends_on:
-      - bge
       - bgeapi
-      - bitcoin
-      - postgres
   bge:
     image: jorgemartinezpizarro/bge:3.3-SNAPSHOT
     environment:
-      JAVA_MAX_MEM: 40g
-      JAVA_MIN_MEM: 8g
+      JAVA_MAX_MEM: 32g
+      JAVA_MIN_MEM: 12g
     depends_on:
       - postgres
       - bitcoin
@@ -37,18 +34,20 @@ services:
     networks: 
       bge_network:
         ipv4_address: 172.18.0.5 
+    depends_on:
+      - postgres
     ports:
       - 8080:8080
     volumes:
       - "$PWD/bgeapi/bgeapi.conf:/conf/bgeapi.conf"
       - "$PWD/bgeapi/logback.xml:/conf/logback.xml"
   bitcoin:
-    image: ruimarinho/bitcoin-core:0.16.0
+    image: ruimarinho/bitcoin-core:0.16.3
     networks: 
       bge_network:
         ipv4_address: 172.18.0.2 
     ports:
-      - 8333:8333
+      - 8333
     command: 
       -printtoconsole
       -conf=/etc/bitcoin/bitcoin.conf
@@ -59,15 +58,15 @@ services:
     image: postgres:10.1
     networks:
       bge_network:
-        ipv4_address: 172.18.0.3
+        ipv4_address: 172.18.0.7
     environment:
       POSTGRES_USER: root
       POSTGRES_PASSWORD: trivial
       POSTGRES_DB: postgres
     expose: 
-      - 4442
+      - 4449
     ports: 
-      - "4442:4442"
+      - "4449:4449"
     volumes:
       - "$DATA_FOLDER/psql:/var/lib/postgresql/data"
       - "$PWD/postgres/postgres.conf:/etc/postgresql/postgresql.conf"

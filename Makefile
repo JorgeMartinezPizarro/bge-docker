@@ -1,5 +1,5 @@
 export VERSION?=SNAPSHOT
-export DATA_FOLDER?=/root/bge-data
+export DATA_FOLDER?=/root/data
 export REPOSITORY=jorgemartinezpizarro
 
 ## start
